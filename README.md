@@ -28,6 +28,14 @@ If even a single byte of the original dataset is altered, the resulting hash wil
 
 ---
 
+## 🛡️ ArmorIQ Security (Track 1: Secure by Default)
+DataPassport actively protects the dataset ingestion pipeline using **ArmorIQ**. 
+- **ArmorClaw Interceptor:** Scans incoming datasets in real-time to block embedded exploits, prompt injections, and structural malware signatures *before* they are hashed.
+- **Fail-Closed Guardrails:** Any dataset that fails the security scan is immediately blocked, guaranteeing that only safe, verified data ever reaches the Base Sepolia blockchain.
+- **Cryptographic Intent Verification:** The ArmorIQ SDK registers and logs every execution intent, providing an immutable audit trail of the pipeline's proactive security measures.
+
+---
+
 ## ⚙️ How It Works (The Data Flow)
 
 1. **Dataset Ingestion** ➡️ The data scientist selects a dataset (CSV, JSON, image corpus, etc.).
