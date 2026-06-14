@@ -122,11 +122,12 @@ export const scanUrlCtrl = async (req: Request, res: Response, next: NextFunctio
 
     // Step 3: Code the Fail-Closed Security Guardrail
     if (!clawScan.isSafe) {
-      await armorIQ.logSecurityEvent(`Blocked threat: ${clawScan.threat}`);
+      // Instead of the missing logSecurityEvent method, we can optionally register an intent of the threat
+      await armorIQ.registerIntent(`Blocked threat: ${clawScan.threat}`);
       // Fail Condition: Immediately halt all downstream execution.
       res.status(403).json({
         success: false,
-        error: "Secure Gatekeeper Block: Malicious data was successfully caught and stopped before shipping."
+        error: `ArmorIQ Security Guardrail Blocked this Dataset: ${clawScan.threat}`
       });
       return;
     }
