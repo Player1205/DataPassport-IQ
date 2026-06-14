@@ -1,0 +1,31 @@
+{
+  "name": "data-passport-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:sphinx": "hardhat run scripts/deploy.ts --network shardeum_sphinx",
+    "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
+    "verify:sphinx": "hardhat run scripts/verify.ts --network shardeum_sphinx",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
+    "@typechain/hardhat": "^9.1.0",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@types/node": "^20.14.9",
+    "hardhat": "^2.22.5",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solidity-coverage": "^0.8.12",
+    "typechain": "^8.3.2",
+    "typescript": "^5.5.2",
+    "ts-node": "^10.9.2",
+    "chai": "^4.4.1",
+    "ethers": "^6.12.1",
+    "dotenv": "^16.4.5"
+  }
+}
