@@ -1,0 +1,8 @@
+[build]
+  base = "frontend"
+  command = "npm run build"
+  # publish is omitted to let Netlify's Next.js runtime handle the output directory automatically
+
+[build.environment]
+  # IMPORTANT: Update this URL after deploying the backend to Render
+  NEXT_PUBLIC_API_BASE_URL = "https://data-passport-backend.onrender.com/api"
