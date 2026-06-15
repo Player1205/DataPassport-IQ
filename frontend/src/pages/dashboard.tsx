@@ -2,8 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { Database, ShieldCheck, AlertTriangle, Activity } from "lucide-react";
-import Sidebar from "@/components/layout/Sidebar";
-import TopBar from "@/components/layout/TopBar";
+import AppLayout from "@/components/layout/AppLayout";
 import DatasetTable from "@/components/DatasetTable";
 import { useDatasets } from "@/hooks/useDataset";
 
@@ -26,14 +25,9 @@ export default function Dashboard() {
         <title>Dashboard | DataPassport</title>
       </Head>
 
-      <div className="flex min-h-screen bg-void">
-        <Sidebar />
-        <div className="flex-1 flex flex-col min-w-0">
-          <TopBar title="Dashboard" subtitle="Live dataset registry" />
-
-          <main className="flex-1 px-6 py-6 max-w-6xl w-full mx-auto animate-in">
+      <AppLayout title="Dashboard" subtitle="Live dataset registry">
             {/* ── Stats Cards ─────────────────────────────────────── */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="bg-surface/40 border border-border rounded-xl p-5 flex items-start gap-4 transition-all hover:bg-surface/60">
                 <div className="p-2.5 bg-surface rounded-lg border border-border">
                   <Database size={20} className="text-muted" />
@@ -125,9 +119,7 @@ export default function Dashboard() {
                 />
               </div>
             )}
-          </main>
-        </div>
-      </div>
+      </AppLayout>
     </>
   );
 }

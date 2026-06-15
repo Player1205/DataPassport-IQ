@@ -5,8 +5,7 @@ import {
   Upload, Hash, Tag, FileText, AlertCircle,
   CheckCircle2, Loader2, Link2, Zap, ArrowRight,
 } from "lucide-react";
-import Sidebar from "@/components/layout/Sidebar";
-import TopBar from "@/components/layout/TopBar";
+import AppLayout from "@/components/layout/AppLayout";
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
@@ -58,7 +57,7 @@ function StepBar({ current, mode }: { current: Step; mode: Mode }) {
   const steps = mode === "url" ? URL_STEPS : MANUAL_STEPS;
   const idx = Math.max(0, steps.findIndex((s) => s.id === current));
   return (
-    <div className="flex items-center mb-8">
+    <div className="flex items-center mb-8 overflow-x-auto">
       {steps.map((s, i) => (
         <div key={s.id} className="flex items-center flex-1 last:flex-none">
           <div className="flex flex-col items-center">
@@ -227,11 +226,7 @@ export default function NewDataset() {
   return (
     <>
       <Head><title>Register Dataset · DataPassport</title></Head>
-      <div className="flex min-h-screen bg-void">
-        <Sidebar />
-        <div className="flex-1 flex flex-col min-w-0">
-          <TopBar title="Register Dataset" subtitle="Add a new dataset to the registry" />
-          <main className="flex-1 px-6 py-6 max-w-3xl">
+      <AppLayout title="Register Dataset" subtitle="Add a new dataset to the registry">
 
             {/* ── Mode toggle ──────────────────────────────────── */}
             {step === "form" && (
@@ -435,7 +430,7 @@ export default function NewDataset() {
                     <FileText size={15} className="text-accent-2" />
                     <h3 className="text-sm font-semibold text-text">Basic Information</h3>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="md:col-span-2">
                       <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-1.5">Dataset Name *</label>
                       <input
@@ -445,7 +440,7 @@ export default function NewDataset() {
                       />
                       {errors.name && <p className="text-[10px] text-rose-400 mt-1">{errors.name}</p>}
                     </div>
-                    <div className="md:col-span-2">
+                    <div className="lg:col-span-2">
                       <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-1.5">Description *</label>
                       <textarea rows={3}
                         className={`w-full bg-void border rounded-lg px-3 py-2 text-sm focus:border-accent/50 outline-none transition-all resize-none ${errors.description ? "border-rose-500/60" : "border-border"}`}
@@ -477,7 +472,7 @@ export default function NewDataset() {
                     <Hash size={15} className="text-accent-2" />
                     <h3 className="text-sm font-semibold text-text">Technical Details</h3>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-[10px] text-muted font-bold uppercase tracking-wider mb-1.5">Version</label>
                       <input className="w-full bg-void border border-border rounded-lg px-3 py-2 text-sm focus:border-accent/50 outline-none"
@@ -535,9 +530,7 @@ export default function NewDataset() {
               </div>
             )}
 
-          </main>
-        </div>
-      </div>
+      </AppLayout>
     </>
   );
 }

@@ -23,7 +23,7 @@ export default function Sidebar() {
   const { pathname } = useRouter();
 
   return (
-    <aside className="flex flex-col w-60 min-h-screen bg-void-2 border-r border-border px-3 py-5 shrink-0">
+    <aside className="hidden lg:flex flex-col w-60 min-h-screen bg-void-2 border-r border-border px-3 py-5 shrink-0">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2.5 px-2 mb-8 group">
         <div className="w-8 h-8 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center group-hover:bg-accent/30 transition-colors">

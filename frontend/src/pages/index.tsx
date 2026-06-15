@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useState } from "react";
 import Link from "next/link";
 import {
   Shield,
@@ -7,6 +8,8 @@ import {
   Hexagon,
   CheckCircle,
   Zap,
+  Menu,
+  X,
 } from "lucide-react";
 
 //import Image from "next/image";
@@ -37,6 +40,8 @@ const STATS = [
 ];
 
 export default function LandingPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <>
       <Head>
@@ -49,7 +54,7 @@ export default function LandingPage() {
 
       <div className="min-h-screen bg-void bg-grid text-text">
         {/* ── Nav ──────────────────────────────────────────────────── */}
-        <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 md:px-12 h-14 border-b border-border/60 bg-void/80 backdrop-blur-md">
+        <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 lg:px-12 h-14 border-b border-border/60 bg-void/80 backdrop-blur-md">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center">
               <Hexagon size={14} className="text-accent-2 fill-accent/20" />
@@ -62,16 +67,39 @@ export default function LandingPage() {
             </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-2">
+          <nav className="hidden lg:flex items-center gap-6 text-sm text-muted-2">
             <Link href="/dashboard" className="hover:text-text transition-colors">Dashboard</Link>
             <Link href="/verify" className="hover:text-text transition-colors">Verify</Link>
             <a href="#" className="hover:text-text transition-colors">Docs</a>
           </nav>
 
-          <Link href="/dashboard" className="btn-primary text-xs px-3 py-1.5">
-            Launch App <ArrowRight size={13} />
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/dashboard" className="btn-primary text-xs px-3 py-1.5 hidden sm:flex">
+              Launch App <ArrowRight size={13} />
+            </Link>
+            <button
+              className="lg:hidden text-text p-1.5 hover:bg-surface rounded-md transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </header>
+
+        {/* ── Mobile Menu Overlay ──────────────────────────────────── */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 top-14 z-40 bg-void/95 backdrop-blur-xl animate-in slide-in-from-top-2 lg:hidden">
+            <nav className="flex flex-col p-6 gap-6 text-sm">
+              <Link href="/dashboard" className="text-text-2 hover:text-text font-medium" onClick={() => setIsMobileMenuOpen(false)}>Dashboard</Link>
+              <Link href="/verify" className="text-text-2 hover:text-text font-medium" onClick={() => setIsMobileMenuOpen(false)}>Verify</Link>
+              <a href="#" className="text-text-2 hover:text-text font-medium" onClick={() => setIsMobileMenuOpen(false)}>Docs</a>
+              <div className="h-px w-full bg-border/50 my-2" />
+              <Link href="/dashboard" className="btn-primary text-sm px-4 py-3 justify-center w-full sm:hidden" onClick={() => setIsMobileMenuOpen(false)}>
+                Launch App <ArrowRight size={14} />
+              </Link>
+            </nav>
+          </div>
+        )}
 
         {/* ── Hero ─────────────────────────────────────────────────── */}
         <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-6 pt-14">
@@ -87,7 +115,7 @@ export default function LandingPage() {
             </div>
 
             <h1
-              className="text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-5"
+              className="text-3xl sm:text-5xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-5"
               style={{ fontFamily: "Syne, sans-serif" }}
             >
               <span className="text-gradient">Trustworthy</span>
@@ -95,7 +123,7 @@ export default function LandingPage() {
               AI Data Provenance
             </h1>
 
-            <p className="text-lg md:text-xl text-text-2 max-w-xl mx-auto leading-relaxed mb-8">
+            <p className="text-base sm:text-lg lg:text-xl text-text-2 max-w-xl mx-auto leading-relaxed mb-8">
               Register, certify, and verify AI training datasets on-chain.{" "}
               <span className="text-text">DataPassport</span> gives every
               dataset an immutable identity — with AI-powered risk scoring.
@@ -117,11 +145,11 @@ export default function LandingPage() {
 
         {/* ── Stats ────────────────────────────────────────────────── */}
         <section className="border-y border-border bg-void-2/60">
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-border">
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 md:divide-x divide-y md:divide-y-0 divide-border">
             {STATS.map(({ value, label }) => (
               <div key={label} className="flex flex-col items-center justify-center py-8 px-4 text-center">
                 <p
-                  className="text-3xl font-bold text-accent-2"
+                  className="text-2xl sm:text-3xl font-bold text-accent-2"
                   style={{ fontFamily: "Syne, sans-serif" }}
                 >
                   {value}
@@ -138,7 +166,7 @@ export default function LandingPage() {
             What DataPassport does
           </p>
           <h2
-            className="text-3xl font-bold text-center text-text mb-10"
+            className="text-2xl sm:text-3xl font-bold text-center text-text mb-10"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
             Built for trustworthy AI
@@ -161,7 +189,7 @@ export default function LandingPage() {
           <div className="max-w-xl mx-auto">
             <CheckCircle className="mx-auto text-accent-2 mb-4" size={32} />
             <h2
-              className="text-3xl font-bold text-text mb-3"
+              className="text-2xl sm:text-3xl font-bold text-text mb-3"
               style={{ fontFamily: "Syne, sans-serif" }}
             >
               Ready to certify your dataset?

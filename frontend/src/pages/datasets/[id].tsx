@@ -11,8 +11,7 @@ import {
   AlertCircle,
   Loader2
 } from "lucide-react";
-import Sidebar from "@/components/layout/Sidebar";
-import TopBar from "@/components/layout/TopBar";
+import AppLayout from "@/components/layout/AppLayout";
 import { useDataset } from "@/hooks/useDataset";
 import RiskBadge from "@/components/RiskBadge";
 import { datasetsApi } from "@/lib/apiClient";
@@ -60,22 +59,17 @@ export default function DatasetDetailsPage() {
   return (
     <>
       <Head><title>{dataset.name} | DataPassport</title></Head>
-      <div className="flex min-h-screen bg-void text-text font-sans">
-        <Sidebar />
-        <div className="flex-1 flex flex-col min-w-0">
-          <TopBar title="Dataset Explorer" subtitle={`Managing: ${dataset.name}`} />
-          
-          <main className="flex-1 p-6 max-w-6xl mx-auto w-full">
+      <AppLayout title="Dataset Explorer" subtitle={`Managing: ${dataset.name}`}>
             <button onClick={() => router.push("/dashboard")} className="flex items-center gap-2 text-xs text-muted-2 hover:text-text mb-6 transition-colors font-bold uppercase tracking-widest">
               <ArrowLeft size={14} /> Back to Dashboard
             </button>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
-                <div className="card-lg p-8 border border-border bg-surface/20 rounded-2xl shadow-xl">
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>{dataset.name}</h1>
+                <div className="card-lg p-5 sm:p-8 border border-border bg-surface/20 rounded-2xl shadow-xl">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">
+                    <div className="min-w-0">
+                      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>{dataset.name}</h1>
                       <p className="text-muted-2 font-mono text-[10px] uppercase tracking-widest">{dataset.id}</p>
                     </div>
                     {/* Passing backend riskLevel/riskScore to the Badge component */}
@@ -83,7 +77,7 @@ export default function DatasetDetailsPage() {
                   </div>
                   <p className="text-text-2 mb-8 leading-relaxed text-sm">{dataset.description}</p>
                   
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-border/40">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pt-6 sm:pt-8 border-t border-border/40">
                     <div>
                       <p className="text-[10px] font-bold text-muted uppercase tracking-widest mb-1">Owner</p>
                       <p className="text-xs font-medium text-text">{dataset.owner}</p>
@@ -99,7 +93,7 @@ export default function DatasetDetailsPage() {
                   </div>
                 </div>
 
-                <div className="card-lg p-8 border border-border bg-surface/20 rounded-2xl shadow-xl">
+                <div className="card-lg p-5 sm:p-8 border border-border bg-surface/20 rounded-2xl shadow-xl">
                   <h3 className="text-xs font-bold uppercase tracking-widest mb-6 flex items-center gap-2 text-accent-2">
                     <FileText size={16} /> Data Integrity & Hash
                   </h3>
@@ -181,9 +175,7 @@ export default function DatasetDetailsPage() {
                 </div>
               </div>
             </div>
-          </main>
-        </div>
-      </div>
+      </AppLayout>
     </>
   );
 }

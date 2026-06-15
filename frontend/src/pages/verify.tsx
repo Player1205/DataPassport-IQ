@@ -10,8 +10,7 @@ import {
   Fingerprint,
   History
 } from "lucide-react";
-import Sidebar from "@/components/layout/Sidebar";
-import TopBar from "@/components/layout/TopBar";
+import AppLayout from "@/components/layout/AppLayout";
 import { useVerify } from "@/hooks/useDataset";
 import RiskBadge from "@/components/RiskBadge";
 
@@ -32,12 +31,7 @@ export default function VerifyPage() {
         <title>Verify Hash | DataPassport</title>
       </Head>
 
-      <div className="flex min-h-screen bg-void">
-        <Sidebar />
-        <div className="flex-1 flex flex-col min-w-0">
-          <TopBar title="Verify Integrity" subtitle="Check dataset authenticity on-chain" />
-
-          <main className="flex-1 px-6 py-6 max-w-4xl w-full mx-auto">
+      <AppLayout title="Verify Integrity" subtitle="Check dataset authenticity on-chain">
             {/* ── Search Section ────────────────────────────────── */}
             <div className="mb-10 text-center">
               <h2 className="text-2xl font-bold text-text mb-3" style={{ fontFamily: "Syne, sans-serif" }}>
@@ -47,23 +41,34 @@ export default function VerifyPage() {
                 Paste a dataset's SHA-256 hash to verify its provenance and ensure it hasn't been tampered with since registration.
               </p>
 
-              <form onSubmit={handleVerify} className="relative max-w-2xl mx-auto">
-                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                  <Fingerprint size={20} className="text-muted" />
+              <form onSubmit={handleVerify} className="relative max-w-2xl mx-auto flex flex-col sm:block gap-3">
+                <div className="relative w-full">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <Fingerprint size={20} className="text-muted" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter SHA-256 Hash (e.g. 0x1dbd...)"
+                    className="w-full bg-surface/40 border border-border rounded-2xl py-4 pl-12 pr-4 sm:pr-32 text-sm focus:border-accent/50 outline-none transition-all text-text font-mono"
+                    value={inputHash}
+                    onChange={(e) => setInputHash(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    disabled={loading || !inputHash.trim()}
+                    className="hidden sm:flex absolute right-2 top-2 bottom-2 bg-accent text-void px-6 rounded-xl font-bold text-xs items-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all"
+                  >
+                    {loading ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
+                    Verify
+                  </button>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Enter SHA-256 Hash (e.g. 0x1dbd...)"
-                  className="w-full bg-surface/40 border border-border rounded-2xl py-4 pl-12 pr-32 text-sm focus:border-accent/50 outline-none transition-all text-text font-mono"
-                  value={inputHash}
-                  onChange={(e) => setInputHash(e.target.value)}
-                />
+                {/* Mobile Button */}
                 <button
                   type="submit"
                   disabled={loading || !inputHash.trim()}
-                  className="absolute right-2 top-2 bottom-2 bg-accent text-void px-6 rounded-xl font-bold text-xs flex items-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all"
+                  className="sm:hidden w-full bg-accent text-void py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all shadow-glow-accent"
                 >
-                  {loading ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
+                  {loading ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
                   Verify
                 </button>
               </form>
@@ -90,7 +95,7 @@ export default function VerifyPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Dataset Details */}
                   <div className="card-lg bg-surface/40 border border-border rounded-2xl p-6">
                     <div className="flex items-center gap-2 mb-4">
@@ -159,9 +164,7 @@ export default function VerifyPage() {
                 </button>
               </div>
             )}
-          </main>
-        </div>
-      </div>
+      </AppLayout>
     </>
   );
 }
