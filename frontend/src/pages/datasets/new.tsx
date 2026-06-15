@@ -127,7 +127,7 @@ export default function NewDataset() {
       });
 
       const json = await res.json();
-      if (!res.ok) throw new Error(json?.message || "Scan failed");
+      if (!res.ok) throw new Error(json?.error || json?.message || "Scan failed");
 
       const ds = json.data?.dataset || json.data || json;
       const scanned = json.scanned ?? {};
