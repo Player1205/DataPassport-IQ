@@ -133,7 +133,7 @@ export const scanUrlCtrl = async (req: Request, res: Response, next: NextFunctio
     }
 
     // Step 4: Code the Secure Ingestion & Intent Binding
-    const intentId = await armorIQ.registerIntent("anchor_secure_dataset");
+    const intentId = await armorIQ.registerIntent("register_secure_dataset");
 
     const datasetHash = normalizeAndHash(response.data);
 
@@ -163,22 +163,10 @@ export const scanUrlCtrl = async (req: Request, res: Response, next: NextFunctio
       status: "pending_audit",
     });
 
-    // Step 5: Execute On-Chain Anchoring & Close the Audit Loop
-    const tx = await blockchainService.anchorHash(
-      dataset.hash,
-      dataset.name,
-      dataset.url,
-      0
-    );
+    // Step 5: Close the Intent (No automatic anchoring per user request)
+    await armorIQ.closeIntent(intentId, "pending_anchoring");
 
-    dataset.anchored = true;
-    dataset.txHash = tx.hash;
-    dataset.status = "anchored";
-    await dataset.save();
-
-    await armorIQ.closeIntent(intentId, tx.hash);
-
-    res.status(201).json({ success: true, dataset, txHash: tx.hash });
+    res.status(201).json({ success: true, dataset });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
     logger.error(`[Scan Error] ${message}`);

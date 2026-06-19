@@ -104,6 +104,12 @@ export default function DatasetDetailsPage() {
                         {dataset.hash || "0x0000000000000000000000000000000000000000000000000000000000000000"}
                       </code>
                     </div>
+                    <div>
+                      <p className="text-[10px] text-muted-2 uppercase font-bold mb-2 tracking-widest">Transaction Hash</p>
+                      <code className={`block bg-void/50 p-4 rounded-xl text-[11px] border border-border/40 break-all font-mono leading-relaxed ${isAnchored ? 'text-emerald-400' : 'text-amber-400/70 italic'}`}>
+                        {isAnchored ? (dataset.txHash || "0x...") : "Not anchored on blockchain yet"}
+                      </code>
+                    </div>
                   </div>
                 </div>
               </div>
