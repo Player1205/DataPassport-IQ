@@ -9,7 +9,14 @@ import { logger } from "../utils/logger";
  * Implements a Fast-First (Groq) architecture with a Fallback (Gemini).
  */
 export const analyzePII = async (data: any) => {
-  const dataString = JSON.stringify(data).substring(0, 10000);
+  let dataString = "";
+  try {
+    dataString = typeof data === "string" ? data : JSON.stringify(data) || "";
+    dataString = dataString.substring(0, 10000);
+  } catch (e) {
+    logger.warn("[AI Audit] Failed to stringify data");
+  }
+
   const prompt = `
     Perform a deep security audit on this JSON dataset. 
     Identify Personally Identifiable Information (PII) such as Names, UIDs (like 24BCS10257), Emails, or Phone Numbers.
@@ -43,7 +50,7 @@ export const analyzePII = async (data: any) => {
             "Authorization": `Bearer ${groqKey}`,
             "Content-Type": "application/json"
           },
-          timeout: 10000 // 10 second timeout for Groq
+          timeout: 5000 // 5 second timeout for Groq
         }
       );
       
@@ -67,7 +74,14 @@ export const analyzePII = async (data: any) => {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: env.LLM_MODEL || "gemini-1.5-flash" });
 
-    const result = await model.generateContent(prompt);
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Gemini API timeout after 5000ms")), 5000)
+    );
+
+    const result = await Promise.race([
+      model.generateContent(prompt),
+      timeoutPromise
+    ]) as any;
     const response = await result.response;
     const text = response.text();
 
@@ -117,6 +131,10 @@ function fallbackResponse(dataString: string, reason: string) {
   }
   if (/24bcs\d{4}/i.test(dataString)) {
     anomalies.push("University UIDs detected");
+    riskScore += 20;
+  }
+  if (/\b[A-Z][a-z]+\s[A-Z][a-z]+\b/.test(dataString)) {
+    anomalies.push("Potential Names detected");
     riskScore += 20;
   }
 
