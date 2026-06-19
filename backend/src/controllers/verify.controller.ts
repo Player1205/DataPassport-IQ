@@ -74,12 +74,28 @@ export const verifyDatasetHash = async (req: Request, res: Response, next: NextF
     const liveUrl = `${latestUrl}${latestUrl.includes("?") ? "&" : "?"}t=${Date.now()}`;
 
     logger.info(`[Verify] Re-fetching dataset from: ${liveUrl}`);
-    const response = await axios.get(liveUrl, {
-      transformResponse: [(d: string) => d],
-      timeout: FETCH_TIMEOUT_MS,
-      maxContentLength: FETCH_MAX_BYTES,
-      maxBodyLength: FETCH_MAX_BYTES,
-    });
+    let response;
+    try {
+      response = await axios.get(liveUrl, {
+        transformResponse: [(d: string) => d],
+        timeout: FETCH_TIMEOUT_MS,
+        maxContentLength: FETCH_MAX_BYTES,
+        maxBodyLength: FETCH_MAX_BYTES,
+      });
+    } catch (err: any) {
+      if (err.response && err.response.status === 404) {
+        return res.status(404).json({
+          success: false,
+          verified: false,
+          message: "External dataset URL returned 404 Not Found. The file may have been deleted or made private on GitHub.",
+        });
+      }
+      return res.status(400).json({
+        success: false,
+        verified: false,
+        message: "Failed to download dataset from external URL.",
+      });
+    }
 
     const liveHash = normalizeAndHash(response.data);
     const isVerified = liveHash === dataset.hash;

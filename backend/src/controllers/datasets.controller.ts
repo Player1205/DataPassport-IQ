@@ -200,11 +200,20 @@ export const analyzeDatasetCtrl = async (req: Request, res: Response, next: Next
     // SSRF protection on stored URL
     await validateUrl(dataset.url);
 
-    const response = await axios.get(dataset.url, {
-      timeout: FETCH_TIMEOUT_MS,
-      maxContentLength: FETCH_MAX_BYTES,
-    });
-    const analysis = await aiService.analyzePII(response.data);
+    // Fetch the raw dataset content
+    const latestUrl = getLatestUrl(dataset.url);
+    let response;
+    try {
+      response = await axios.get(latestUrl, { timeout: 15000 });
+    } catch (err: any) {
+      if (err.response && err.response.status === 404) {
+        throw new AppError(404, "External dataset URL returned 404 Not Found. The file may have been deleted or made private.", "NOT_FOUND");
+      }
+      throw new AppError(400, "Failed to download dataset from external URL.", "BAD_REQUEST");
+    }
+
+    const content = response.data;
+    const analysis = await aiService.analyzePII(content);
     dataset.riskLevel = analysis.riskLevel;
     dataset.aiSummary = analysis.summary;
     dataset.anomalies = analysis.anomalies;
