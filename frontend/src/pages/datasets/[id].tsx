@@ -15,7 +15,7 @@ import AppLayout from "@/components/layout/AppLayout";
 import { useDataset } from "@/hooks/useDataset";
 import RiskBadge from "@/components/RiskBadge";
 import { datasetsApi } from "@/lib/apiClient";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DatasetDetailsPage() {
   const router = useRouter();

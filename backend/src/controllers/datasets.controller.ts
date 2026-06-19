@@ -192,9 +192,10 @@ export const analyzeDatasetCtrl = async (req: Request, res: Response, next: Next
     const dataset = await Dataset.findById(req.params.id);
     if (!dataset) throw new AppError(404, "Dataset not found", "NOT_FOUND");
 
-    if (dataset.ownerAddress.toLowerCase() !== req.user?.walletAddress.toLowerCase() && req.user?.role !== "admin") {
-      throw new AppError(403, "Forbidden", "FORBIDDEN");
-    }
+    // Ownership check temporarily removed per user request so anyone can run Deep Audit
+    // if (dataset.ownerAddress.toLowerCase() !== req.user?.walletAddress.toLowerCase() && req.user?.role !== "admin") {
+    //   throw new AppError(403, "Forbidden", "FORBIDDEN");
+    // }
 
     // SSRF protection on stored URL
     await validateUrl(dataset.url);
@@ -219,9 +220,10 @@ export const anchorDatasetCtrl = async (req: Request, res: Response, next: NextF
     const dataset = await Dataset.findById(req.params.id);
     if (!dataset) throw new AppError(404, "Dataset not found", "NOT_FOUND");
 
-    if (dataset.ownerAddress.toLowerCase() !== req.user?.walletAddress.toLowerCase() && req.user?.role !== "admin") {
-      throw new AppError(403, "Forbidden", "FORBIDDEN");
-    }
+    // Ownership check temporarily removed per user request so anyone can anchor
+    // if (dataset.ownerAddress.toLowerCase() !== req.user?.walletAddress.toLowerCase() && req.user?.role !== "admin") {
+    //   throw new AppError(403, "Forbidden", "FORBIDDEN");
+    // }
 
     const tx = await blockchainService.anchorHash(
       dataset.hash,

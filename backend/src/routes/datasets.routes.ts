@@ -24,9 +24,9 @@ router.post("/", requireAuth, createDatasetCtrl);
 router.post("/scan-url", requireAuth, scanUrlCtrl);
 
 /** POST /api/datasets/:id/analyze - The "Deep Audit" logic */
-router.post("/:id/analyze", requireAuth, analyzeDatasetCtrl);
+router.post("/:id/analyze", analyzeDatasetCtrl);
 
 /** POST /api/datasets/:id/anchor - The "Anchor" logic */
-router.post("/:id/anchor", requireAuth, anchorDatasetCtrl);
+router.post("/:id/anchor", anchorDatasetCtrl);
 
 export default router;
